@@ -60,7 +60,7 @@ export default {};
   font-size: 14px;
 }
 section {
-  margin-bottom: 30px;
+  margin-top: 30px;
   display: block;
 }
 section .cnot {

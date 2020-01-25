@@ -14,9 +14,7 @@
           </div>
         </div>
       </section>
-      <section>
-        
-      </section>
+    
     </div>
   </div>
 </template>
@@ -53,10 +51,12 @@ section {
 }
 section .cnot {
  
-  border: 2px solid transparent;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  padding: 10px 10px;
+      border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    padding: 10px 10px;
+       margin-top: 30px;
+  
 }
 
 section .cnot .message {
