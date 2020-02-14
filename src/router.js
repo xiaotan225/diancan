@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'           //首页
 import Login from './views/Login.vue'         // 登录
 import Register from './views/Register.vue'  // 注册
+import Test from './views/test.vue'
 
 // 菜单
 import Menu from './views/menu/Menu.vue'
@@ -15,9 +16,9 @@ import Drinks from './views/menu/Drinks.vue'  // 饮料
 import Slse from './views/menu/Slse.vue'      // 其他
 
 //订单
-import Order from './views/Order.vue' 
+import Order from './views/Order.vue'
 // 管理
-import Admin from './views/Admin.vue' 
+import Admin from './views/Admin.vue'
 // 关于
 import About from './views/about/About.vue'
 // 关于子路由
@@ -30,7 +31,12 @@ export default new Router({
   mode: 'history',
   linkActiveClass: 'active',
   base: process.env.BASE_URL,
+
   routes: [
+    {
+      path: '/test',
+      component: Test
+    },
     // 首页
     {
       path: '/',
@@ -87,51 +93,51 @@ export default new Router({
         }
       ]
     },
-      // 订单
-      {
-        path: '/order',
-        name: 'order',
-        component: Order,
-        beforeEnter(to,from,next){
-          if(localStorage.getItem('IsLogin') === 'true'){
-            next()
-          }else{
-            alert('没有登录，请登录')
-            next('/login')
-          }
+    // 订单
+    {
+      path: '/order',
+      name: 'order',
+      component: Order,
+      beforeEnter(to, from, next) {
+        if (localStorage.getItem('IsLogin') === 'true') {
+          next()
+        } else {
+          alert('没有登录，请登录')
+          next('/login')
         }
-      },
-       // 管理
-       {
-        path: '/admin',
-        name: 'admin',
-        component: Admin,
-        beforeEnter(to,from,next){
-          if(localStorage.getItem('IsLogin') === 'true'){
-            next()
-          }else{
-            alert('没有登录，请登录')
-            next('/login')
-          }
+      }
+    },
+    // 管理
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
+      beforeEnter(to, from, next) {
+        if (localStorage.getItem('IsLogin') === 'true') {
+          next()
+        } else {
+          alert('没有登录，请登录')
+          next('/login')
         }
-      },
-       // 关于
-       {
-        path: '/about',
-        name: 'about',
-        component: About,
-        children:[
-          {
-            path:'/about/contact',
-            name:'contact',
-            component:Contact
-          },
-          {
-            path:'/about/intro',
-            name:'intro',
-            component:Intro
-          }
-        ]
-      },
+      }
+    },
+    // 关于
+    {
+      path: '/about',
+      name: 'about',
+      component: About,
+      children: [
+        {
+          path: '/about/contact',
+          name: 'contact',
+          component: Contact
+        },
+        {
+          path: '/about/intro',
+          name: 'intro',
+          component: Intro
+        }
+      ]
+    },
   ]
 })
