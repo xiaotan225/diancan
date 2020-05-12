@@ -20,12 +20,12 @@
   </div>
 </template>
 <script>
-import Loading from './Loading'
+import Loading from "./Loading";
 
 export default {
-  components:{
+  components: {
     Loading
-  },  
+  },
   props: ["name"],
   data() {
     return {
@@ -38,13 +38,17 @@ export default {
   },
   methods: {
     add(GetGreens) {
+       if (!localStorage.getItem('IsLogin')) {
+          alert('没有登录，请登录')
+          this.$router.push('/login')
+          return 
+        }
       this.$axios
         .get("/order.json")
         .then(result => {
           for (let key in result.data) {
             if (result.data[key].name === GetGreens.name) {
               this.has = key;
-
               this.signify = true;
               break;
             } else {
@@ -191,26 +195,28 @@ strong {
   }
 }
 @media screen and (max-width: 406px) {
-  .img{
+  .img {
     width: 60%;
+    height: 111px;
+    border-radius: 20px 20px 20px 20px;
   }
-    img {
+  img {
     width: 100%;
-    height: 100px;
-    border-radius: 20px 20px 0 0;
+    height: 111px;
+    border-radius: 20px 20px 20px 20px;
   }
   .hot ul li {
     background-color: #fff;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     margin: 10px 10px;
     border-radius: 20px;
   }
-  .color{
-   width: 100px;
+  .color {
+    width: 100px;
   }
   .add {
-   position: absolute;
+    position: absolute;
     right: 12px;
     top: 70px;
     width: 30px;
@@ -224,11 +230,16 @@ strong {
     cursor: pointer;
   }
 }
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 379px) {
   img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 111px;
     border-radius: 20px 20px 0 0;
+  }
+   img {
+    width: 100%;
+    height: 111px;
+    border-radius: 20px 20px 20px 20px;
   }
   .add {
     position: absolute;

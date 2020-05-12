@@ -114,6 +114,7 @@ export default new Router({
           alert('没有登录，请登录')
           next('/login')
         }
+        
       }
     },
     // 关于
