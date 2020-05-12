@@ -1,6 +1,6 @@
 <template>
   <div>
-<FoodShow :name="name"></FoodShow>
+    <FoodShow :name="name"></FoodShow>
   </div>
 </template>
 <script>

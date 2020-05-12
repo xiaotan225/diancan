@@ -24,4 +24,7 @@ export default {
 .App {
   display: flex;
 }
+a{
+  font-size: 15px;
+}
 </style>

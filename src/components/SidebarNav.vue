@@ -113,23 +113,20 @@ body {
 }
 
 body {
-  background: url("../assets/bg.jpg") no-repeat;
-  
-  background-size: 100%, 100%;
+  background-color:wheat;
+  /* background: url("../assets/bg.jpg") no-repeat; */
+  /* background-size: 100%, 100%; */
     /* background:url('../assets/bg1.jpg'); */
 }
 
 .container {
-  width: 100%;
-  height: 100%;
-  display: flex;
+
 }
 
 /* 侧边导航开始 */
 .SidebarNav {
   padding-top: 50px;
-  height: 100%;
-  width: 130px;
+  width: 100px;
   text-align: center;
 }
 
@@ -137,10 +134,7 @@ body {
   height: 90%;
 }
 
-.SidebarNav .nav ul {
-  height: 90%;
-  display: none;
-}
+
 
 .SidebarNav .nav ul {
   width: 100%;
@@ -150,7 +144,6 @@ body {
 }
 
 .SidebarNav .nav ul li a {
-  height: 30%;
   width: 100%;
   line-height: 100px;
   border-bottom: 1px solid #000;
@@ -188,5 +181,32 @@ body {
 }
 .UserBox a {
   font-size: 15px;
+}
+
+
+/* 窗口宽度<960,设计宽度=768 */
+@media screen and (max-width:959px){
+
+}
+/* 窗口宽度<768,设计宽度=640 */
+@media screen and (max-width:767px){
+
+}
+/* 窗口宽度<640,设计宽度=480 */
+@media screen and (max-width:639px){
+
+}
+/* 窗口宽度<480,设计宽度=320 */
+@media screen and (max-width:479px){
+  .SidebarNav {
+  width: 70px;
+}
+.SidebarNav .nav ul li a {
+  height: 30%;
+  width: 100%;
+  line-height: 70px;
+  border-bottom: 1px solid #000;
+}
+
 }
 </style>

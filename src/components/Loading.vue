@@ -11,13 +11,12 @@ export default {
 
 <style scoped>
 .loading{
-    background: rgba(0, 0, 0, 0.5) ;
-    position: absolute;
-    top: 0 ;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    color: #fff;
+    /* background: rgba(0, 0, 0, 0.5) ; */
+   
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content:center;
     font-size: 20px;
     display: flex;
     align-items: center;

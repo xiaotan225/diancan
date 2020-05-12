@@ -1,6 +1,6 @@
 <template>
   <div class="hot">
-    <div v-if="load">{{loadcont}}</div>
+    <Loading v-if="load" :msg="loadcont"></Loading>
 
     <ul>
       <li v-for="GetGreens in GetGreensData" :key="GetGreens.id">
@@ -20,7 +20,12 @@
   </div>
 </template>
 <script>
+import Loading from './Loading'
+
 export default {
+  components:{
+    Loading
+  },  
   props: ["name"],
   data() {
     return {
@@ -38,11 +43,9 @@ export default {
         .then(result => {
           for (let key in result.data) {
             if (result.data[key].name === GetGreens.name) {
-             
               this.has = key;
-              
+
               this.signify = true;
-              console.log(111)
               break;
             } else {
               this.signify = false;
@@ -55,19 +58,15 @@ export default {
             this.bug = false;
             if (!this.signify) {
               GetGreens.num++;
-             
-              this.$axios.post("/order.json", GetGreens).then(res => {
-              
-              });
+
+              this.$axios.post("/order.json", GetGreens).then(res => {});
             }
           } else {
             if (this.signify) {
               GetGreens.num = ++res.data[this.has].num;
               this.$axios
                 .put("/order/" + this.has + ".json", GetGreens)
-                .then(res => {
-               
-                });
+                .then(res => {});
             }
           }
         })
@@ -130,7 +129,7 @@ img {
 .hot ul li {
   background-color: #fff;
   float: left;
-  margin: 30px 74px;
+  margin: 10px 10px;
   border-radius: 20px;
 }
 .cont {
@@ -140,7 +139,7 @@ img {
 }
 .cont h4 {
   margin-bottom: 10px;
-  font-size: 17px;
+  font-size: 16px;
 }
 .add {
   position: absolute;
@@ -160,6 +159,90 @@ img {
   color: rgb(255, 201, 23);
 }
 strong {
-  font-size: 18px;
+  font-size: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  img {
+    width: 200px;
+    height: 150px;
+    border-radius: 20px 20px 0 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  img {
+    width: 150px;
+    height: 100px;
+    border-radius: 20px 20px 0 0;
+  }
+  .add {
+    position: absolute;
+    right: 12px;
+    top: 33px;
+    width: 30px;
+    height: 30px;
+    background: rgb(131, 131, 131);
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    font-size: 39px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+@media screen and (max-width: 406px) {
+  .img{
+    width: 60%;
+  }
+    img {
+    width: 100%;
+    height: 100px;
+    border-radius: 20px 20px 0 0;
+  }
+  .hot ul li {
+    background-color: #fff;
+    display: flex;
+    justify-content:space-between;
+    margin: 10px 10px;
+    border-radius: 20px;
+  }
+  .color{
+   width: 100px;
+  }
+  .add {
+   position: absolute;
+    right: 12px;
+    top: 70px;
+    width: 30px;
+    height: 30px;
+    background: rgb(131, 131, 131);
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    font-size: 39px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+@media screen and (max-width: 300px) {
+  img {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px 20px 0 0;
+  }
+  .add {
+    position: absolute;
+    right: 12px;
+    top: 69px;
+    width: 30px;
+    height: 30px;
+    background: rgb(131, 131, 131);
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    font-size: 39px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 }
 </style>

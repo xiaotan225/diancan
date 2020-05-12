@@ -4,7 +4,6 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'           //首页
 import Login from './views/Login.vue'         // 登录
 import Register from './views/Register.vue'  // 注册
-import Test from './views/test.vue'
 
 // 菜单
 import Menu from './views/menu/Menu.vue'
@@ -28,15 +27,11 @@ import Intro from './views/about/Intro.vue'       // 个人简介
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: "hash",
   linkActiveClass: 'active',
   base: process.env.BASE_URL,
 
   routes: [
-    {
-      path: '/test',
-      component: Test
-    },
     // 首页
     {
       path: '/',

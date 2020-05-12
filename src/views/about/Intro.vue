@@ -40,12 +40,13 @@ export default {};
 .intro {
   width: 100%;
   max-width: 1000px;
-  margin: 20px auto;
-  padding: 20px;
+ margin: 20px auto;
+  padding: 0 20px 20px  20px;
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.15);
   background: url("../../assets/bg1.jpg");
   color: #3f1c1c;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -80,5 +81,18 @@ section .cnot div {
 }
 a {
   font-size: 14px;
+}
+
+
+/* 窗口宽度<640,设计宽度=480 */
+@media screen and (max-width: 704px) {
+  section .cnot .message {
+    display: flex;
+    flex-direction: column;
+  }
+}
+/* 窗口宽度<480,设计宽度=320 */
+@media screen and (max-width: 479px) {
+
 }
 </style>

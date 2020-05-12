@@ -24,11 +24,12 @@
               <li>删除</li>
             </ul>
           </div>
+          <Loading v-if="load" :msg="loadcont"></Loading>
+
           <div class="OrderCont">
-           
             <ul v-for="(order, index) in orderData" :key="index">
               <li>{{index+1}}</li>
-              <li>{{order.name}}</li>
+              <li class="name">{{order.name}}</li>
               <li class="ts">{{order.price | flite}}</li>
               <li>
                 <button class="btn" @click="minus(order,index)">-</button>
@@ -41,13 +42,11 @@
                 <button class="del" @click="del(order,index)">删除</button>
               </li>
             </ul>
-              <ul v-if="isShow">
-                <div >
-                  暂无数据
-                </div>
-              </ul>
+            <ul v-if="isShow">
+              <div>暂无数据</div>
+            </ul>
           </div>
-        
+
           <div class="cls" v-if="clsIsShow">
             <button @click="cls">一键清除</button>
           </div>
@@ -58,26 +57,27 @@
 </template>
 <script>
 import HeaderNav from "../components/HeaderNav";
-
+import Loading from '../components/Loading'
 export default {
   components: {
     HeaderNav,
-  
+    Loading
   },
   data() {
     return {
-      clsIsShow:false,
-      isShow:false,
-      numbers:parseInt(Math.random() * 10000)
+      clsIsShow: false,
+      isShow: false,
+      numbers: parseInt(Math.random() * 10000),
+      load: true,
+      loadcont: "加载中...",
     };
   },
   methods: {
-    submit(){
-      this.$axios.post('/submit.json',this.orderData)
-        .then(res=>{
-          this.cls()
-          alert('提交成功')
-        })
+    submit() {
+      this.$axios.post("/submit.json", this.orderData).then(res => {
+        this.cls();
+        alert("提交成功");
+      });
     },
     add(item) {
       item.num++;
@@ -86,11 +86,10 @@ export default {
         .then(res => {})
         .catch(err => {});
     },
-    minus(item,index) {
+    minus(item, index) {
       item.num--;
       if (item.num <= 1) {
-        
-        this.del(item,index)
+        this.del(item, index);
       } else {
         this.$axios
           .put("/order/" + item.has + ".json", item)
@@ -100,24 +99,21 @@ export default {
     },
     inpu(item, index) {
       var cn = document.getElementsByTagName("input");
-    
+
       var val = "";
-    
+
       for (let i = 0; i < cn.length; i++) {
         if (i === index) {
           val = cn[i].value;
-          
         }
       }
-      
-      if(val.startsWith('-')){
-        alert('错误')
-      }else{
-        
-         item.num = val;
-      this.$axios.put("/order/" + item.has + ".json", item).then(res => {});
+
+      if (val.startsWith("-")) {
+        alert("错误");
+      } else {
+        item.num = val;
+        this.$axios.put("/order/" + item.has + ".json", item).then(res => {});
       }
-     
     },
     del(item, index) {
       this.$axios
@@ -127,13 +123,10 @@ export default {
         })
         .catch(err => {});
     },
-    cls(){
-      
-      this.$axios.delete('/order.json')
-        .then(res=>{
-          this.$store.commit("SettorderData", []);
-
-        })
+    cls() {
+      this.$axios.delete("/order.json").then(res => {
+        this.$store.commit("SettorderData", []);
+      });
     }
   },
   filters: {
@@ -151,19 +144,19 @@ export default {
           result.data[key].has = key;
           myarr.push(result.data[key]);
         }
+        this.load = false
         // this.orderData = myarr;
         this.$store.commit("SettorderData", myarr);
       })
       .catch(err => {});
   },
-  beforeUpdate(){
-    
-    if(this.orderData.length >0){
-      this.clsIsShow = true
-      this.isShow = false
-    }else{
-      this.clsIsShow = false
-        this.isShow = true
+  beforeUpdate() {
+    if (this.orderData.length > 0) {
+      this.clsIsShow = true;
+      this.isShow = false;
+    } else {
+      this.clsIsShow = false;
+      this.isShow = true;
     }
   },
   computed: {
@@ -216,11 +209,11 @@ export default {
   line-height: 35px;
   text-align: center;
   display: table;
- 
+
   color: #716052;
   font-size: 16px;
 }
-.OrderTitle ul li{
+.OrderTitle ul li {
   width: 110px;
   display: table-cell;
 }
@@ -253,9 +246,6 @@ export default {
   width: 110px;
   display: table-cell;
 }
-.OrderCont ul .ts {
- 
-}
 
 .menvnav .list {
   display: flex;
@@ -276,16 +266,111 @@ export default {
 }
 .cls {
   display: flex;
-  justify-content:flex-end;
+  justify-content: flex-end;
   margin-top: 5px;
 }
 .cls button {
   width: 100px;
   height: 35px;
   background-color: red;
-  border: 1px solid #ccc; 
+  border: 1px solid #ccc;
   color: #fff;
-  box-shadow: 1px 1px 1px #ccc; 
-      margin-right: 10px;
+  box-shadow: 1px 1px 1px #ccc;
+  margin-right: 10px;
+}
+
+/* 窗口宽度<960,设计宽度=768 */
+@media screen and (max-width: 959px) {
+  .OrderCont {
+    width: 700px;
+  }
+  .OrderTitle {
+    width: 700px;
+  }
+  .OrderHeader {
+    width: 700px;
+  }
+}
+/* 窗口宽度<768,设计宽度=640 */
+@media screen and (max-width: 767px) {
+  .OrderCont {
+    width: 550px;
+  }
+  .OrderTitle {
+    width: 550px;
+  }
+  .OrderHeader {
+    width: 550px;
+  }
+  .vessel {
+    font-size: 15px;
+  }
+  .OrderCont ul li input {
+    width: 33px;
+  }
+  .OrderCont ul li {
+    width: 80px;
+  }
+}
+/* 窗口宽度<640,设计宽度=480 */
+@media screen and (max-width: 639px) {
+  .OrderCont {
+    width: 450px;
+  }
+  .OrderTitle {
+    width: 450px;
+  }
+  .OrderTitle li {
+    font-size: 15px;
+  }
+  .OrderHeader {
+    width: 450px;
+  }
+  .vessel {
+    font-size: 13px;
+  }
+  .OrderCont ul li input {
+    width: 17px;
+  }
+  .OrderCont ul li {
+    width: 58px;
+  }
+}
+/* 窗口宽度<480,设计宽度=320 */
+@media screen and (max-width: 479px) {
+  .OrderCont {
+    width: 280px;
+  }
+  .OrderTitle {
+    width: 280px;
+  }
+  .OrderTitle li {
+    font-size: 15px;
+  }
+  .OrderHeader {
+    width: 280px;
+  }
+  .vessel {
+    font-size: 10px;
+  }
+  .OrderCont ul li input {
+    width: 4px;
+  }
+  .OrderCont ul li {
+    width: 58px;
+  }
+  .OrderCont ul li .btn {
+    width: 10px;
+  }
+  .OrderHeader button {
+    font-size: 15px;
+  }
+  .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+  }
 }
 </style>

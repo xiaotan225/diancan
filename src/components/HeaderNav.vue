@@ -13,7 +13,6 @@ export default {
 <style scoped>
 .menvnav .list {
   display: flex;
-  justify-content: space-around;
   background: rgba(225, 225, 225, 0.5);
   height: 60px;
   line-height: 60px;

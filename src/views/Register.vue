@@ -119,4 +119,36 @@ export default {
   width: 100px;
   height: 50px;
 }
+
+
+/* 窗口宽度<768,设计宽度=640 */
+@media screen and (max-width: 767px) {
+  .LoginBox .box1 {
+    height: 55%;
+    width: 81%;
+  }
+}
+/* 窗口宽度<640,设计宽度=480 */
+@media screen and (max-width: 639px) {
+  .LoginBox .box1 {
+       height: 55%;
+    width: 81%;
+  }
+}
+/* 窗口宽度<480,设计宽度=320 */
+@media screen and (max-width: 479px) {
+  .LoginBox .box1 {
+    height: 44%;
+    width: 81%;
+  }
+  .LoginBox div input {
+    height: 30px;
+    width: 97%;
+    margin: 10px 0;
+  }
+  .LoginBox div button {
+    width: 86px;
+    height: 38px;
+  }
+}
 </style>

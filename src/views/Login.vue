@@ -1,9 +1,8 @@
 <template>
   <div class="LoginBox">
-     <Loading :msg="msg" v-if="Login"></Loading>
-    <Alert :alert="alert" v-if="IsShowAlert || isShow" ></Alert>
+    <Loading :msg="msg" class="syl" v-if="Login"></Loading>
+    <Alert :alert="alert" v-if="IsShowAlert || isShow"></Alert>
     <div class="box1">
-      
       <div class="box2">
         <!-- <label>用户名：</label> -->
         <input type="text" placeholder="用户名" v-model="user.username" />
@@ -11,7 +10,7 @@
         <!-- <label>密码：</label> -->
         <input type="password" placeholder="密码" v-model="user.password" />
         <br />
-       
+
         <button @click="login">登录</button>
       </div>
     </div>
@@ -30,15 +29,15 @@ export default {
   data() {
     return {
       alert: "注册成功",
-      msg:'登录中...',
+      msg: "登录中...",
       user: {
         username: "",
         password: ""
       },
       isShow: false,
-      alertlogin:'',
-      isLogin:false,
-      Login:false
+      alertlogin: "",
+      isLogin: false,
+      Login: false
     };
   },
   methods: {
@@ -50,37 +49,42 @@ export default {
           this.isShow = false;
           this.alertlogin = "";
         }, 2000);
-        return 
-      }else{
-        this.Login = true
-        this.$axios.get('/user.json')
-        .then((result) => {
-          this.Login = false
-        let keys =  Object.keys(result.data)
-        for(let key of keys){
-          let user = result.data[key]
-          if(user.username === this.user.username && user.password === this.user.password){
-             localStorage.setItem("IsLogin",true)
-             localStorage.setItem("UserName",this.user.username)
-             this.$store.commit('SetIsLoginSuc',{IsLogin:true,UserName:this.user.username})
-             this.isLogin = true
-             this.$router.push('/menu/hot')
-            break;
-          }
-        }
-        if(!this.isLogin){
-          
-          this.alert = "用户名或密码错误";
-            this.isShow = true;
-            setTimeout(() => {
-               this.isShow = false;
-               this.alertlogin = "";
+        return;
+      } else {
+        this.Login = true;
+        this.$axios
+          .get("/user.json")
+          .then(result => {
+            this.Login = false;
+            let keys = Object.keys(result.data);
+            for (let key of keys) {
+              let user = result.data[key];
+              if (
+                user.username === this.user.username &&
+                user.password === this.user.password
+              ) {
+                localStorage.setItem("IsLogin", true);
+                localStorage.setItem("UserName", this.user.username);
+                this.$store.commit("SetIsLoginSuc", {
+                  IsLogin: true,
+                  UserName: this.user.username
+                });
+                this.isLogin = true;
+                this.$router.push("/menu/hot");
+                break;
+              }
+            }
+            if (!this.isLogin) {
+              this.alert = "用户名或密码错误";
+              this.isShow = true;
+              setTimeout(() => {
+                this.isShow = false;
+                this.alertlogin = "";
               }, 2000);
-              this.isLogin = false
-        }
-        }).catch((err) => {
-          
-        });
+              this.isLogin = false;
+            }
+          })
+          .catch(err => {});
       }
     }
   },
@@ -99,7 +103,13 @@ export default {
 
 <style scoped>
 /* 登录开始 */
-
+.syl{
+   position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
 .LoginBox {
   width: 100%;
   height: 100%;
@@ -141,4 +151,35 @@ export default {
 }
 
 /* 登录结束 */
+
+/* 窗口宽度<768,设计宽度=640 */
+@media screen and (max-width: 767px) {
+  .LoginBox .box1 {
+    height: 44%;
+    width: 81%;
+  }
+}
+/* 窗口宽度<640,设计宽度=480 */
+@media screen and (max-width: 639px) {
+  .LoginBox .box1 {
+    height: 44%;
+    width: 81%;
+  }
+}
+/* 窗口宽度<480,设计宽度=320 */
+@media screen and (max-width: 479px) {
+  .LoginBox .box1 {
+    height: 44%;
+    width: 81%;
+  }
+  .LoginBox div input {
+    height: 30px;
+    width: 97%;
+    margin: 10px 0;
+  }
+  .LoginBox div button {
+    width: 86px;
+    height: 38px;
+  }
+}
 </style>

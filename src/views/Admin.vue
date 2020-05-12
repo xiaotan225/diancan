@@ -36,7 +36,7 @@
           <h3>删除菜品</h3>
         </div>
         <div class="delcont" v-for="(getGreen) in GetGreensData" :key="getGreen.id">
-          <h3>{{getGreen.name}}</h3>
+          <h4>{{getGreen.name}}</h4>
           <a href="javascript:;" @click="del(getGreen)">删除</a>
         </div>
       </div>
@@ -169,14 +169,14 @@ export default {
 .AdminCont {
   position: relative;
   height: 100%;
-
+  padding-top: 29px;
+  font-size: 15px;
   background: rgba(225, 225, 225, 0.8);
 }
-.AdminCont {
-  padding: 29px;
-}
+
 .title h3 {
   color: #ca6c15;
+  
 }
 .addcont {
   padding: 10px;
