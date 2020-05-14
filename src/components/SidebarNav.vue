@@ -113,7 +113,9 @@ body {
 }
 
 body {
-  background-color:wheat;
+  /* background-color:wheat; */
+  background-image: linear-gradient(to top, #b3ffab 0%, #12fff7 100%);
+  /* background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); */
   /* background: url("../assets/bg.jpg") no-repeat; */
   /* background-size: 100%, 100%; */
     /* background:url('../assets/bg1.jpg'); */

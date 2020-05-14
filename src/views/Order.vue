@@ -345,16 +345,16 @@ export default {
     width: 280px;
   }
   .OrderTitle li {
-    font-size: 15px;
+    font-size: 12px;
   }
   .OrderHeader {
     width: 280px;
   }
   .vessel {
-    font-size: 10px;
+    font-size: 12px;
   }
   .OrderCont ul li input {
-    width: 4px;
+    width: 8px;
   }
   .OrderCont ul li {
     width: 58px;
@@ -363,7 +363,7 @@ export default {
     width: 10px;
   }
   .OrderHeader button {
-    font-size: 15px;
+    font-size: 14px;
   }
   .name {
     display: block;
@@ -372,5 +372,10 @@ export default {
     white-space: nowrap;
     width: 100px;
   }
+  .OrderCont ul li .del{
+    width: 20px;
+    font-size: 12px;
+  }
+ 
 }
 </style>

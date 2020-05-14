@@ -22,7 +22,7 @@
           <div class="cnot">
             <div>
               <div>●&nbsp;基础部分:&nbsp;Html/Css/JavaScript/Ajax</div>
-              <div>●&nbsp;前端框架:&nbsp;Vue</div>
+              <div>●&nbsp;前端框架:&nbsp;Vue全家桶</div>
               <div>●&nbsp;前端相关工具:&nbsp;Git/Npm/Webpack/Ps/Less</div>
               <div>●&nbsp;后端相关语言:&nbsp;Node/PHP</div>
             </div>
@@ -93,6 +93,12 @@ a {
 }
 /* 窗口宽度<480,设计宽度=320 */
 @media screen and (max-width: 479px) {
+  .container{
+    font-size: 12px;
+  }
+  .cnot a{
+    font-size: 12px;
+  }
 
 }
 </style>

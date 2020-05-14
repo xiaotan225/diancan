@@ -72,5 +72,10 @@ a {
 }
 /* 窗口宽度<480,设计宽度=320 */
 @media screen and (max-width: 479px) {
+  .container{
+    font-size: 12px;
+  }
+ 
+
 }
 </style>

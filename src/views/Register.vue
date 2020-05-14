@@ -9,7 +9,7 @@
         <br />
         <input type="password" placeholder="密码" v-model="user.password" />
         <br />
-        <input type="password" placeholder="确认密码" v-model="affirmpass" />
+        <input type="password" placeholder="确认密码" v-model="affirmpass" @keydown.enter="register" />
         <br />
         <Loading :msg="msg" v-if="IsShowLoading"></Loading>
         <button @click="register">注册</button>
@@ -31,18 +31,39 @@ export default {
     return {
       user: {
         username: "",
-        password: "",
-        
+        password: ""
       },
       affirmpass: "",
       msg: "注册中...",
       IsShowLoading: false,
       alert: "",
-      isShow: false
+      isShow: false,
+      users: null,
+      usernames: []
     };
   },
   methods: {
+    getUser() {
+      this.$axios
+        .get("/user.json")
+        .then(result => {
+          this.users = result.data;
+        })
+        .catch(err => {});
+    },
     register() {
+      // console.log(this.user)
+      for (const key in this.users) {
+        if (this.users.hasOwnProperty(key)) {
+          const val = this.users[key];
+          if (val.username === this.user.username) {
+            this.alert = "用户名已存在";
+            this.isShow = true;
+
+            return;
+          }
+        }
+      }
       if (this.user.username == "" || this.user.password == "") {
         this.alert = "请输入用户名或密码";
         this.isShow = true;
@@ -76,6 +97,9 @@ export default {
     IsShowAlert() {
       return this.$store.getters.GetIsRegisterSuc;
     }
+  },
+  created() {
+    this.getUser();
   }
 };
 </script>
@@ -120,7 +144,6 @@ export default {
   height: 50px;
 }
 
-
 /* 窗口宽度<768,设计宽度=640 */
 @media screen and (max-width: 767px) {
   .LoginBox .box1 {
@@ -131,7 +154,7 @@ export default {
 /* 窗口宽度<640,设计宽度=480 */
 @media screen and (max-width: 639px) {
   .LoginBox .box1 {
-       height: 55%;
+    height: 55%;
     width: 81%;
   }
 }
