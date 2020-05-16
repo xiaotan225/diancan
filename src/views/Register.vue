@@ -5,10 +5,13 @@
     <Alert :alert="alert" v-if="isShow"></Alert>
     <div class="box1">
       <div class="box2">
+        <span class="icon iconfont">&#xe621;</span>
         <input type="text" placeholder="用户名" v-model="user.username" />
         <br />
+        <span class="icon iconfont">&#xe634;</span>
         <input type="password" placeholder="密码" v-model="user.password" />
         <br />
+        <span class="icon iconfont">&#xe634;</span>
         <input type="password" placeholder="确认密码" v-model="affirmpass" @keydown.enter="register" />
         <br />
         <Loading :msg="msg" v-if="IsShowLoading"></Loading>
@@ -105,23 +108,36 @@ export default {
 </script>
 
 <style scoped>
+/* 登录开始 */
+.icon {
+  padding: 0 10px;
+  color: #fff;
+}
+.syl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
 .LoginBox {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .LoginBox .box1 {
   text-align: center;
   height: 60%;
   width: 55%;
-  background: rgba(225, 225, 225, 0.7);
+  /* background: rgba(225, 225, 225, 0.7); */
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
-  box-shadow: 1px 3px 0.5px #666;
+  /* box-shadow: 1px 3px 0.5px #666; */
   padding: 10px 10px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,46 +148,78 @@ export default {
 }
 
 .LoginBox div input {
-  height: 43px;
   width: 50%;
-  font-size: 15px;
-  margin: 20px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  font-size: 18px;
+  margin: 30px 0;
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding: 5px 0;
+}
+input::-webkit-input-placeholder {
+  color: #ccc;
+}
+input {
+  background: none;
+  outline: none;
+  border: none;
 }
 .LoginBox div button {
-  width: 100px;
-  height: 50px;
+  width: 250px;
+  height: 40px;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-size: 19px;
+  border-radius: 20px;
 }
+
+/* 登录结束 */
 
 /* 窗口宽度<768,设计宽度=640 */
 @media screen and (max-width: 767px) {
   .LoginBox .box1 {
-    height: 55%;
+    height: 50%;
     width: 81%;
+  }
+  .LoginBox .box1 {
+    padding-bottom: 30px;
   }
 }
 /* 窗口宽度<640,设计宽度=480 */
 @media screen and (max-width: 639px) {
   .LoginBox .box1 {
-    height: 55%;
+    height: 44%;
     width: 81%;
   }
 }
 /* 窗口宽度<480,设计宽度=320 */
 @media screen and (max-width: 479px) {
+  .icon {
+    padding: 0 10px;
+    display: inline-flex;
+    position: relative;
+    top: 5px;
+    right: 11px;
+  }
   .LoginBox .box1 {
-    height: 44%;
-    width: 81%;
+    width: 88%;
   }
   .LoginBox div input {
-    height: 30px;
-    width: 97%;
+    width: 85%;
     margin: 10px 0;
   }
   .LoginBox div button {
-    width: 86px;
+    width: 140px;
     height: 38px;
+    position: relative;
+    top: 10px;
+  }
+}
+@media screen and (max-width: 346px) { 
+  .icon {
+    display: none;
   }
 }
 </style>
