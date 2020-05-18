@@ -5,10 +5,12 @@
     <div class="box1">
       <div class="box2">
         <!-- <label>用户名：</label> -->
-        <span class="icon iconfont">&#xe621;</span><input type="text" placeholder="用户名" v-model="user.username" />
+        <span class="icon iconfont">&#xe621;</span>
+        <input type="text" placeholder="用户名" v-model="user.username" />
         <br />
         <!-- <label>密码：</label> -->
-        <span class="icon iconfont">&#xe634;</span><input type="password" placeholder="密码" v-model="user.password" @keydown.enter="login"/>
+        <span class="icon iconfont">&#xe634;</span>
+        <input type="password" placeholder="密码" v-model="user.password" @keydown.enter="login" />
         <br />
 
         <button @click="login">登录</button>
@@ -20,6 +22,7 @@
 <script>
 import Alert from "../components/Alert";
 import Loading from "../components/Loading";
+import { getuser } from "@/utils/api.js";
 export default {
   name: "login",
   components: {
@@ -41,7 +44,7 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       if (this.user.username == "" || this.user.password == "") {
         this.alert = "请输入用户名或密码";
         this.isShow = true;
@@ -51,8 +54,49 @@ export default {
         }, 2000);
         return;
       } else {
-        this.Login = true;
-        this.$axios
+        try {
+          this.Login = true;
+          let result = await getuser();
+          if (result.status === 200) {
+            this.Login = false;
+            let keys = Object.keys(result.data);
+            for (let key of keys) {
+              let user = result.data[key];
+              if (
+                user.username === this.user.username &&
+                user.password === this.user.password
+              ) {
+                localStorage.setItem("IsLogin", true);
+                localStorage.setItem("UserName", this.user.username);
+                this.$store.commit("SetIsLoginSuc", {
+                  IsLogin: true,
+                  UserName: this.user.username
+                });
+                this.isLogin = true;
+                this.$router.push("/menu/hot");
+                break;
+              }
+            }
+            if (!this.isLogin) {
+              this.alert = "用户名或密码错误";
+              this.isShow = true;
+              setTimeout(() => {
+                this.isShow = false;
+                this.alertlogin = "";
+              }, 2000);
+              this.isLogin = false;
+            }
+          }
+        } catch (error) {
+          this.alert = "登陆失败";
+          this.isShow = true;
+          setTimeout(() => {
+            this.isShow = false;
+            this.alertlogin = "";
+          }, 2000);
+          this.isLogin = false;
+        }
+        /*  this.$axios
           .get("/user.json")
           .then(result => {
             this.Login = false;
@@ -84,7 +128,7 @@ export default {
               this.isLogin = false;
             }
           })
-          .catch(err => {});
+          .catch(err => {}) */
       }
     }
   },
@@ -212,7 +256,7 @@ input {
     top: 22px;
   }
 }
-@media screen and (max-width: 346px) { 
+@media screen and (max-width: 346px) {
   .icon {
     display: none;
   }

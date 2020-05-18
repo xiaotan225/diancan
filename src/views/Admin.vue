@@ -46,6 +46,8 @@
 <script>
 import HeaderNav from "../components/HeaderNav";
 import Alert from "../components/Alert";
+import { apiAddGreens, apiGreensDel, apiGreens } from "@/utils/api.js";
+
 export default {
   components: {
     HeaderNav,
@@ -58,7 +60,7 @@ export default {
         classify: "",
         price: "",
         img: "",
-        num:0
+        num: 0
       },
       // getGreens: [],
       isShow: false,
@@ -66,7 +68,8 @@ export default {
     };
   },
   methods: {
-    add() {
+    /* 添加商品 */
+    async add() {
       let verify =
         this.greens.name == "" ||
         this.greens.classify == "" ||
@@ -82,71 +85,66 @@ export default {
       } else {
         this.alert = "菜品添加中...";
         this.isShow = true;
-        this.$axios
-          .post("/greens.json", this.greens)
-          .then(result => {
-             this.$store.commit("AddGreens", JSON.parse(result.config.data));
-            this.greens.name = "";
-            this.greens.classify = "";
-            this.greens.price = "";
-            this.greens.img = "";
-            this.alert = "添加成功";
-            this.isShow = true;
-            setTimeout(() => {
-              this.isShow = false;
-            }, 2000);
-          })
-          .catch(err => {
-            this.alert = "添加失败";
-            this.isShow = true;
-            setTimeout(() => {
-              this.isShow = false;
-            }, 2000);
-          });
+        try {
+          let result = await apiAddGreens(this.greens);
+          this.$store.commit("AddGreens", JSON.parse(result.config.data));
+          this.greens.name = "";
+          this.greens.classify = "";
+          this.greens.price = "";
+          this.greens.img = "";
+          this.alert = "添加成功";
+          this.isShow = true;
+          setTimeout(() => {
+            this.isShow = false;
+          }, 2000);
+        } catch (error) {
+          this.alert = "添加失败";
+          this.isShow = true;
+          setTimeout(() => {
+            this.isShow = false;
+          }, 2000);
+        }
       }
     },
-    del(id) {
-      this.$axios
-        .delete("/greens/" + id.id + ".json")
-        .then(result => {
-          this.alert = "删除成功";
-          this.isShow = true;
-          this.$store.commit('DelGreens',id)
-          setTimeout(() => {
-            this.isShow = false;
-          }, 2000);
-        })
-        .catch(err => {
-          this.alert = "删除失败";
-          this.isShow = true;
-          setTimeout(() => {
-            this.isShow = false;
-          }, 2000);
-        });
+    async del(id) {
+      try {
+        let result = await apiGreensDel(id.id);
+
+        this.alert = "删除成功";
+        this.isShow = true;
+        this.$store.commit("DelGreens", id);
+        setTimeout(() => {
+          this.isShow = false;
+        }, 2000);
+      } catch (error) {
+        this.alert = "删除失败";
+        this.isShow = true;
+        setTimeout(() => {
+          this.isShow = false;
+        }, 2000);
+      }
     },
-    GetData() {
-      this.$axios
-        .get("/greens.json")
-        .then(result => {
-          let arr = [];
-          for (let key in result.data) {
-            result.data[key].id = key;
-            arr.push(result.data[key]);
-          }
-          // this.getGreens = arr;
-          this.$store.commit("SetGreens", arr);
-        })
-        .catch(err => {
-          this.alert = "获取菜品失败";
-          this.isShow = true;
-          setTimeout(() => {
-            this.isShow = false;
-          }, 2000);
-        });
+    async GetData() {
+      try {
+        let result = await apiGreens();
+        let arr = [];
+        for (let key in result.data) {
+          result.data[key].id = key;
+          arr.push(result.data[key]);
+        }
+        // this.getGreens = arr;
+        this.$store.commit("SetGreens", arr);
+      } catch (error) {
+        this.alert = "获取菜品失败";
+        this.isShow = true;
+        setTimeout(() => {
+          this.isShow = false;
+        }, 2000);
+      }
     }
   },
   created() {
-    this.GetData()
+    this.GetData();
   },
   computed: {
     GetGreensData() {
@@ -176,7 +174,6 @@ export default {
 
 .title h3 {
   color: #ca6c15;
-  
 }
 .addcont {
   padding: 10px;

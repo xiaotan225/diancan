@@ -57,7 +57,15 @@
 </template>
 <script>
 import HeaderNav from "../components/HeaderNav";
-import Loading from '../components/Loading'
+import Loading from "../components/Loading";
+import {
+  apiSubmitOrder,
+  apiAddOrderNum,
+  apiAddOrderDel,
+  apiAddOrderCls,
+  apiGetOrder
+} from "@/utils/api.js";
+
 export default {
   components: {
     HeaderNav,
@@ -69,35 +77,34 @@ export default {
       isShow: false,
       numbers: parseInt(Math.random() * 10000),
       load: true,
-      loadcont: "加载中...",
+      loadcont: "加载中..."
     };
   },
   methods: {
-    submit() {
-      this.$axios.post("/submit.json", this.orderData).then(res => {
+    /* 添加订单 */
+    async submit() {
+      let result = await apiSubmitOrder(this.ord);
+      if (result.status === 200) {
         this.cls();
         alert("提交成功");
-      });
+      }
     },
-    add(item) {
+    /* 数量++ */
+    async add(item) {
       item.num++;
-      this.$axios
-        .put("/order/" + item.has + ".json", item)
-        .then(res => {})
-        .catch(err => {});
+      let result = await apiAddOrderNum(item.has, item);
     },
-    minus(item, index) {
+    /* 数量-- */
+    async minus(item, index) {
       item.num--;
       if (item.num <= 1) {
         this.del(item, index);
       } else {
-        this.$axios
-          .put("/order/" + item.has + ".json", item)
-          .then(res => {})
-          .catch(err => {});
+        let result = await apiAddOrderNum(item.has, item);
       }
     },
-    inpu(item, index) {
+    /* 输入数量 */
+    async inpu(item, index) {
       var cn = document.getElementsByTagName("input");
 
       var val = "";
@@ -112,21 +119,38 @@ export default {
         alert("错误");
       } else {
         item.num = val;
-        this.$axios.put("/order/" + item.has + ".json", item).then(res => {});
+        let result = await apiAddOrderNum(item.has, item);
       }
     },
-    del(item, index) {
-      this.$axios
-        .delete("/order/" + item.has + ".json", item)
-        .then(res => {
-          this.$store.commit("DeltorderData", index);
-        })
-        .catch(err => {});
+
+    /* 删除单个商品 */
+    async del(item, index) {
+      let result = await apiOrderDel(item.has, item);
+      if (result.status === 200) {
+        this.$store.commit("DeltorderData", index);
+      }
     },
-    cls() {
-      this.$axios.delete("/order.json").then(res => {
+    /* 一键删除 */
+    async cls() {
+      let result = await apiOrderCls();
+      if (result.status === 200) {
         this.$store.commit("SettorderData", []);
-      });
+      }
+    },
+    async getList() {
+      try {
+        let result = await apiGetOrder();
+        let myarr = [];
+        for (let key in result.data) {
+          result.data[key].has = key;
+          myarr.push(result.data[key]);
+        }
+        this.load = false;
+        // this.orderData = myarr;
+        this.$store.commit("SettorderData", myarr);
+      } catch (error) {
+        alert("获取失败");
+      }
     }
   },
   filters: {
@@ -136,19 +160,11 @@ export default {
     }
   },
   created() {
-    this.$axios
+    this.getList()
+   /*  this.$axios
       .get("/order.json")
-      .then(result => {
-        let myarr = [];
-        for (let key in result.data) {
-          result.data[key].has = key;
-          myarr.push(result.data[key]);
-        }
-        this.load = false
-        // this.orderData = myarr;
-        this.$store.commit("SettorderData", myarr);
-      })
-      .catch(err => {});
+      .then(result => {})
+      .catch(err => {}); */
   },
   beforeUpdate() {
     if (this.orderData.length > 0) {
@@ -372,10 +388,9 @@ export default {
     white-space: nowrap;
     width: 100px;
   }
-  .OrderCont ul li .del{
+  .OrderCont ul li .del {
     width: 20px;
     font-size: 12px;
   }
- 
 }
 </style>

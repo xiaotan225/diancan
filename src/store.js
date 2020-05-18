@@ -67,7 +67,6 @@ export default new Vuex.Store({
         if (data.name == item.name) {
           state.Greens.splice(index, 1)
         }
-
         return state.Greens
       })
 

@@ -24,6 +24,7 @@
 <script>
 import Loading from "../components/Loading";
 import Alert from "../components/Alert";
+import { getuser, reqRegister } from "@/utils/api.js";
 export default {
   name: "register",
   components: {
@@ -46,15 +47,11 @@ export default {
     };
   },
   methods: {
-    getUser() {
-      this.$axios
-        .get("/user.json")
-        .then(result => {
-          this.users = result.data;
-        })
-        .catch(err => {});
+    async getuser() {
+      var result = await getuser();
+      this.users = result.data;
     },
-    register() {
+    async register() {
       // console.log(this.user)
       for (const key in this.users) {
         if (this.users.hasOwnProperty(key)) {
@@ -85,14 +82,10 @@ export default {
         return;
       } else {
         this.IsShowLoading = true;
-        this.$axios
-          .post("/user.json", this.user)
-          .then(result => {
-            this.$store.commit("SetIsRegisterSuc", true);
-            this.IsShowLoading = false;
-            this.$router.push({ path: "/login" });
-          })
-          .catch(err => {});
+        await reqRegister(this.user);
+        this.$store.commit("SetIsRegisterSuc", true);
+        this.IsShowLoading = false;
+        this.$router.push({ path: "/login" });
       }
     }
   },
@@ -102,7 +95,7 @@ export default {
     }
   },
   created() {
-    this.getUser();
+    this.getuser();
   }
 };
 </script>
@@ -217,7 +210,7 @@ input {
     top: 10px;
   }
 }
-@media screen and (max-width: 346px) { 
+@media screen and (max-width: 346px) {
   .icon {
     display: none;
   }

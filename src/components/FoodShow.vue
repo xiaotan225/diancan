@@ -1,7 +1,6 @@
 <template>
   <div class="hot">
     <Loading v-if="load" :msg="loadcont"></Loading>
-
     <ul>
       <li v-for="GetGreens in GetGreensData" :key="GetGreens.id">
         <div class="img">
@@ -21,6 +20,7 @@
 </template>
 <script>
 import Loading from "./Loading";
+import { apiAddOrder, apiGetOrder, apiAddOrderNum,apiGreens } from "@/utils/api.js";
 
 export default {
   components: {
@@ -37,70 +37,105 @@ export default {
     };
   },
   methods: {
-    add(GetGreens) {
-       if (!localStorage.getItem('IsLogin')) {
-          alert('没有登录，请登录')
-          this.$router.push('/login')
-          return 
+    /* 添加订单 */
+    async add(GetGreens) {
+      if (!localStorage.getItem("IsLogin")) {
+        alert("没有登录，请登录");
+        this.$router.push("/login");
+        return;
+      }
+      let orderList = await apiGetOrder();
+      for (let key in orderList.data) {
+        if (orderList.data[key].name === GetGreens.name) {
+          this.has = key;
+          this.signify = true;
+          break;
+        } else {
+          this.signify = false;
         }
-      this.$axios
-        .get("/order.json")
-        .then(result => {
-          for (let key in result.data) {
-            if (result.data[key].name === GetGreens.name) {
-              this.has = key;
-              this.signify = true;
-              break;
-            } else {
-              this.signify = false;
-            }
+      }
+      if (this.bug) {
+        this.bug = false;
+        /* 订单里面没有该商品 数量+1 */
+        if (!this.signify) {
+          GetGreens.num++;
+          await apiAddOrder(GetGreens);
+        }
+      } else {
+        /* 订单里面有该商品 数量++*/
+        if (this.signify) {
+          GetGreens.num = ++orderList.data[this.has].num;
+          try {
+            var aa = await apiAddOrderNum(this.has, GetGreens);
+          } catch (error) {
+            this.alert = "添加订单失败";
+            this.isShow = true;
+            setTimeout(() => {
+              this.isShow = false;
+            }, 2000);
           }
-          return result;
-        })
-        .then(res => {
-          if (this.bug) {
-            this.bug = false;
-            if (!this.signify) {
-              GetGreens.num++;
+        }
+      }
 
-              this.$axios.post("/order.json", GetGreens).then(res => {});
-            }
-          } else {
-            if (this.signify) {
-              GetGreens.num = ++res.data[this.has].num;
-              this.$axios
-                .put("/order/" + this.has + ".json", GetGreens)
-                .then(res => {});
-            }
-          }
-        })
-        .catch(err => {
-          this.alert = "添加订单失败";
-          this.isShow = true;
-          setTimeout(() => {
-            this.isShow = false;
-          }, 2000);
-        });
+      // this.$axios
+      //   .get("/order.json")
+      //   .then(result => {
+      //     for (let key in result.data) {
+      //       if (result.data[key].name === GetGreens.name) {
+      //         this.has = key;
+      //         this.signify = true;
+      //         break;
+      //       } else {
+      //         this.signify = false;
+      //       }
+      //     }
+      //     return result;
+      //   })
+      //   .then(res => {
+      //     if (this.bug) {
+      //       this.bug = false;
+      //       console.log('bug')
+      //       /* 订单里面没有该商品 数量+1 */
+      //       if (!this.signify) {
+      //         console.log('订单里面没有该商品')
+      //         GetGreens.num++;
+      //         this.$axios.post("/order.json", GetGreens).then(res => {});
+      //       }
+      //     } else {
+      //       /* 订单里面有该商品 数量++*/
+      //       if (this.signify) {
+      //         GetGreens.num = ++res.data[this.has].num;
+      //         this.$axios
+      //           .put("/order/" + this.has + ".json", GetGreens)
+      //           .then(res => {});
+      //       }
+      //     }
+      //   })
+      //   .catch(err => {
+      //     this.alert = "添加订单失败";
+      //     this.isShow = true;
+      //     setTimeout(() => {
+      //       this.isShow = false;
+      //     }, 2000);
+      //   });
     },
-    GetData() {
-      this.$axios
-        .get("/greens.json")
-        .then(result => {
-          let arr = [];
-          for (let key in result.data) {
-            result.data[key].id = key;
-            arr.push(result.data[key]);
-          }
+    async GetData() {
+      try {
+        let result = await apiGreens();
+        let arr = [];
+        for (let key in result.data) {
+          result.data[key].id = key;
+          arr.push(result.data[key]);
+        }
+        this.$store.commit("SetGreens", arr);
 
-          this.$store.commit("SetGreens", arr);
-        })
-        .catch(err => {
-          this.alert = "获取菜品失败";
-          this.isShow = true;
-          setTimeout(() => {
-            this.isShow = false;
-          }, 2000);
-        });
+      } catch (error) {
+        this.alert = "获取菜品失败";
+        this.isShow = true;
+        setTimeout(() => {
+          this.isShow = false;
+        }, 2000);
+      }
     }
   },
   beforeUpdate() {
@@ -115,6 +150,7 @@ export default {
     this.GetData();
   },
   computed: {
+    /* 对应的菜谱类过滤 */
     GetGreensData() {
       return this.$store.getters.GetGreens.filter(item => {
         return item.classify == this.name;
@@ -236,7 +272,7 @@ strong {
     height: 111px;
     border-radius: 20px 20px 0 0;
   }
-   img {
+  img {
     width: 100%;
     height: 111px;
     border-radius: 20px 20px 20px 20px;
