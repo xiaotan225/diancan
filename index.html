@@ -1,19 +1,44 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=favicon.ico><title>点餐</title><style>@font-face {
-      font-family: 'iconfont';
-      /* project id 1822420 */
-      src: url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.eot');
-      src: url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.eot?#iefix') format('embedded-opentype'),
-        url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.woff2') format('woff2'),
-        url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.woff') format('woff'),
-        url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.ttf') format('truetype'),
-        url('//at.alicdn.com/t/font_1822420_sx1rd0w91zk.svg#iconfont') format('svg');
-    }
+<!DOCTYPE html>
+<html>
 
-    .iconfont {
-      font-family: "iconfont" !important;
-      font-size: 16px;
-      font-style: normal;
-      -webkit-font-smoothing: antialiased;
-      -webkit-text-stroke-width: 0.2px;
-      -moz-osx-font-smoothing: grayscale;
-    }</style><link href=assets/css/app.1c4cd8e9.css rel=preload as=style><link href=assets/js/app.1026dddb.js rel=preload as=script><link href=assets/js/chunk-vendors.e0c0963c.js rel=preload as=script><link href=assets/css/app.1c4cd8e9.css rel=stylesheet></head><body><noscript><strong>We're sorry but demo4 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script src=assets/js/chunk-vendors.e0c0963c.js></script><script src=assets/js/app.1026dddb.js></script></body></html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title></title>
+	<style>
+		html,
+		body,
+		iframe {
+			margin: 0px;
+			width: 100%;
+			height: 100%;
+			overflow: hidden
+		}
+	</style>
+</head>
+
+<body>
+	<iframe id="iframe" src=''
+		frameborder="0" border="0" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true"
+		mozallowfullscreen="true" allowtransparency="true" style="width:100%;height:100%;"></iframe>
+		
+	<script type="text/javascript">
+		var iframe = document.getElementById('iframe')
+		var search =  document.location.search
+		var result = decodeURIComponent(search.replace(/^\?data=/,''))
+		var resultJSON =  JSON.parse(result)
+		var urls = ['https://jx.quanmingjiexi.com/?url=','https://api.80tvs.cn/?url=','https://jiexi.8b5q.cn/player/jx.php?url=','https://jx.baiyu.buzz/aa/?url=','https://jx.baiyu.buzz/bb/?url=','http://jx.1080jx.top/vipjx/?url=','http://jiexi.jiexizhuanyong.com/?url=']
+		var url =  urls[resultJSON.type] + resultJSON.url
+		iframe.src = url
+	
+		// switch (resultJSON.type){
+		// 	case 1:
+				
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
+	</script>
+
+</body>
+
+</html>
